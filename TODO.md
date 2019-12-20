@@ -1,0 +1,17 @@
+# TODO
+- Handle main input
+- Error check and sanitise main input
+- Handle input flags + error check (just parse for now)
+- Generate basic directory structure. Put structure in external file so users can edit as they like.
+- Set language based on the `-l` flag
+	- use `ls languages/` to get all available languages.
+	- have as much language detection/aliases be outside the script as possible
+- Pass off to language-specific script based on language
+- Init file alterations
+- Implement basic makefile (or just copy over from old one)
+- Set git remote repository. Try to clone first? If failed, exit, else carry on as normal.
+- Handle C++ language
+- Handle Fortran-90 language
+- Update more of the makefile.
+- Handle recognition, error check and generation of license.
+- Handle readme, manual and design doc. Readme and manual should have project name as title. Design doc is static.

@@ -33,29 +33,32 @@ Should have the bare-bones for the project to be able to compile right away with
 Easily expandable to add new languages. Do this via separate source directories and custom scripts for each language. eg
 ```
 nwd-2/
-├── c/
-│   ├── specifics.sh
-│   ├── dirtweaks.txt
-│   └── Makefile
-├── cpp/
-│   ├── specifics.sh
-│   ├── dirtweaks.txt
-│   └── Makefile
-├── f90/
-│   ├── specifics.sh
-│   ├── dirtweaks.txt
-│   └── Makefile
-├── licenses/
+├── dirs.txt
+├── docs
+│   ├── DESIGN.md
+│   ├── MANUAL.md
+│   ├── README.md
+│   └── TODO.md
+├── languages
+│   ├── c
+│   │   ├── makefile
+│   │   └── specifics.sh
+│   ├── cpp
+│   │   ├── makefile
+│   │   └── specifics.sh
+│   └── f90
+│       ├── makefile
+│       └── specifics.sh
+├── licenses
 │   ├── GPL-3
 │   └── MIT
-├── docs/
-│   ├── README.md
-│   ├── DESIGN.md
-│   └── MANUAL.md
-├── dirs.txt
 └── nwd
-
 ```
+Language extensions can be easily written with a script file by end users and the source `nwd` script should not need to be edited.
+Automatically detect languages by `ls languages/` but this -creates the issue of not having aliases.-
+Aliases can be created by symlinking directories inside the languages directory.
+
+However, keep a naming convention that everything stays as short, alphanumeric and lower-case as possible.
 
 Have the core program in one script file, then pass off to a language-specific script once the basics are done.
 User can tweak each directory structure as they please via external directory files. ie read directory tree from file, then a separate one for each langauge.
@@ -75,12 +78,12 @@ project/
 │   ├── so/
 │   └── Makefile
 ├── include/
-│   ├── lib1/
-│   ├── lib2/
+│   ├── sub1/
+│   ├── sub2/
 │   └── project.h
 └── src/
-    ├── lib1/
-    ├── lib2/
+    ├── sub1/
+    ├── sub2/
     └── project.c
 ```
 - `project/` - The main directory for each project.
@@ -99,6 +102,8 @@ project/
 Each sub-directory in `src/` should correspond to the equivalent in `include`.
 Then the makefile should treat each sub-directory as an isolated bit of code (unless it requires other headers/libraries).
 When compiled, each subdirectory should produce only one `.so` or `.a` file in `bin/so/` to be linked against the program.
+The name of the library should be the subdirectory name with the prefix `lib`
+For example, the subdirectory `sub1/` should produce the shared object `libsub1.so` 
 
 Only source files directly in `src/` should be compiled to generate the executable.
 The rest should either contribute to a library or not be part of the executable.
@@ -106,15 +111,6 @@ The rest should either contribute to a library or not be part of the executable.
 ### Interpreted Languages
 Nothing yet.
 Maybe try adding Python later.
-
-## Makefile
-The makefile should be able to:
-- Compile a single executable.
-- Compile a single shared object/static object file.
-- Compile a single executable + sub-modules/libraries.
-- Compile multiple sub-modules/libraries with no executable.
-- Save a build number/date for each final binary produced. Updated every link.
-- Create a log file of what commands were run at each timestamp as well as print to screen.
 
 ## Language Specifics
 ### Init files
@@ -136,32 +132,24 @@ Convert all non-alphanumeric characters to `_` then convert alphabetic character
 
 Once done, replace `TEMPLATE` with `$project_name_sanitised` and copy over.
 
-### dirtweaks.txt
-`dirtweaks.txt` should be a pseudo-language and should add/remove files or directories as intended.
-
-For example, Fortran-90 could look like this
+### specifics.sh
+`specifics.sh` should be a shell script that is specific to each language.
+It deals with editing the directory tree, eg
 ```
-- include/
-+ data/
-+ outdata/
+rm include/
+mkdir data/
+mkdir outdata/
 ```
 
-With first column being what to do, second column being what to apply to.
-- `+` Create new file/directory.
-- `-` Remove file/directory.
-- `r` Rename file/directory.
+and it should also deal with creating/editing and copying over the init files for each language.
+If path variables need to be set, then this is where to set them as well.
 
-## TODO List
-- Handle main input
-- Error check and sanitise main input
-- Handle input flags + error check (don't need to execute any specific code, just separate and run accorgdingly)
-- Generate basic directory structure. Put structure in external file so users can edit as they like.
-- Handle C language
-- Implement basic makefile.
-- Set language based on the `-l` flag. Default to C. Have a switch-case block to take in different versions of the same name, eg C++, c++, Cpp, cpp... 
-- Set git remote repository. Try to clone first? If failed, exit, else carry on as normal.
-- Handle C++ language
-- Handle Fortran-90 language
-- Update more of the makefile.
-- Handle recognition and generation of license.
-- Handle readme, manual and design doc. Readme and manual should have project name as title. Design doc is static.
+### Makefile
+The makefile should be able to:
+- Compile a single executable.
+- Compile a single shared object/static object file.
+- Compile a single executable + sub-modules/libraries.
+- Compile multiple sub-modules/libraries with no executable.
+- Save a build number/date for each final binary produced. Updated every link.
+- Create a log file of what commands were run at each timestamp as well as print to screen.
+

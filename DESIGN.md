@@ -5,6 +5,8 @@
 nwd <project-name> [options]
 ```
 
+`<project-name>` should begin with a letter and only be alphanumeric characters, `.` `-` and `_`.
+
 ## Intended Options
 ```
 -l <language>, --language=<language>
@@ -15,9 +17,13 @@ nwd <project-name> [options]
 	Specifies a path to the remote git repository to set as origin.
 	No default.
 
+-i, --init
+	Create initialisation source files for the language.
+
 --license=<license>
 	Copy over a license file if specified.
 	Licenses include GPL-3, MIT, etc.
+	No default.
 ```
 
 ## Intended Behaviour
@@ -25,7 +31,7 @@ Creates a new directory according to the language given.
 Should separate directories for source files, object/compiled files and executables.
 
 Should generate a directory tree suitable for each language, each language can have some customisation but after the base tree is generated.
-(eg Fortran-90 doesn't have header files so doesn't need an `include/` directory.
+(eg Fortran-90 doesn't have header files so doesn't need an `include/` directory)
 
 Copies the relevant files from a directory where the script is located.
 Should have the bare-bones for the project to be able to compile right away with the provided makefile.
@@ -41,13 +47,13 @@ nwd-2/
 │   └── TODO.md
 ├── languages
 │   ├── c
-│   │   ├── makefile
+│   │   ├── Makefile
 │   │   └── specifics.sh
 │   ├── cpp
-│   │   ├── makefile
+│   │   ├── Makefile
 │   │   └── specifics.sh
 │   └── f90
-│       ├── makefile
+│       ├── Makefile
 │       └── specifics.sh
 ├── licenses
 │   ├── GPL-3
@@ -63,10 +69,27 @@ However, keep a naming convention that everything stays as short, alphanumeric a
 Have the core program in one script file, then pass off to a language-specific script once the basics are done.
 User can tweak each directory structure as they please via external directory files. ie read directory tree from file, then a separate one for each langauge.
 
-Create a README, design doc, manual and license. First three in markdown.
+Create a README, design doc, manual and license. All in markdown.
+
+### Program Flow
+Main script:
+1. Check user input on `$1` make sure its a valid name. Usage and exit if not.
+2. Parse program flags
+	- Loop through each argument until the last one
+	- Set git remote - clone if remote exists
+	- Set language variable
+	- Set init files flag
+	- Set license variable
+3. Generate directory tree
+4. Copy over and edit `.md` files
+5. Pass off to language specific script
+
+Language Script:
+1. Get init files flag and program name
+2. Tweak directory structure
+3. If init flag, copy over and `sed` init files
 
 ## Directory Structure
-
 ### Compiled Languages
 ```
 project/
@@ -137,7 +160,7 @@ Once done, replace `TEMPLATE` with `$project_name_sanitised` and copy over.
 It deals with editing the directory tree, eg
 ```
 rm include/
-mkdir data/
+mkdir indata/
 mkdir outdata/
 ```
 
@@ -146,11 +169,9 @@ If path variables need to be set, then this is where to set them as well.
 
 ### Makefile
 The makefile should be able to:
-- Compile a single executable.
-- Compile a single shared object/static object file.
-- Compile a single executable + sub-modules/libraries.
-- Compile multiple sub-modules/libraries with no executable.
-- Save a build number/date for each final binary produced. Updated every link.
+- Create any combination of self-contained (unless otherwise programmed) executables and library files.
+- Easily expandable by adding new subdirectories.
+- Save a build number/date for the project.
 - Create a log file of what commands were run at each timestamp as well as print to screen.
 - Run the executable produced.
 - Clean up build environment.

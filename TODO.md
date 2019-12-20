@@ -2,16 +2,29 @@
 - Handle main input
 - Error check and sanitise main input
 - Handle input flags + error check (just parse for now)
+	- Split into args and make a switch-case inside a for loop?
+	- Google it or look at how [lolcat](https://github.com/jaseg/lolcat/blob/master/lolcat.c) did it in c.
+	- Have a help string/usage thing when parsing fails.
 - Generate basic directory structure. Put structure in external file so users can edit as they like.
 - Set language based on the `-l` flag
 	- use `ls languages/` to get all available languages.
 	- have as much language detection/aliases be outside the script as possible
 - Pass off to language-specific script based on language
+	- Pass through checked project name on `$1`
+	- Pass through init files flag on `$2`
 - Init file alterations
-- Implement basic makefile (or just copy over from old one)
+	- [Help with headers.](https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase)
+- Implement makefile (or just copy over from old one)
+	- Build date/numbers.
+		- Build number should be saved as `metadata/<filename>.bn`
+		- Build date should be saved as `metadata/<filename.bd`
+	- Submodules
+	- [Log files](https://stackoverflow.com/questions/54933242/how-do-i-make-a-makefile-to-log-both-command-and-its-output-to-a-file)
+	- Auto compile/detect submodules? Flag inside the makefile?
+	- make clean
+	- make run
 - Set git remote repository. Try to clone first? If failed, exit, else carry on as normal.
 - Handle C++ language
 - Handle Fortran-90 language
-- Update more of the makefile.
 - Handle recognition, error check and generation of license.
 - Handle readme, manual and design doc. Readme and manual should have project name as title. Design doc is static.

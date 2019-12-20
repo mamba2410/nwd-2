@@ -1,1 +1,104 @@
-#!/bin/sh
+#!/bin/bash
+
+# Define a function to spit out usage information
+usage(){
+	echo "
+	Usage:
+		nwd <project-name> [options]
+	Options:
+	-l <language>, --language=<language>
+		Specifies the language to use for the project.
+		Defaults to c.
+
+	-r <path/to/remote>, --remote=<path/to/remote>
+		Specifies a path to the remote git repository to set as origin.
+		No default.
+
+	-i, --init
+		Create initialisation source files for the language.
+
+	--license=<license>
+		Copy over a license file if specified.
+		Licenses include GPL-3, MIT, etc.
+		No default.
+	"
+	exit
+}
+
+# Getting project name
+project_name="$1"
+
+# Checking if the name is valid
+if ! echo $project_name | grep -Eq -- "^[A-z0-9_\.][-A-z0-9_\.]*$"; then
+	# Quit if not valid
+	usage
+fi
+
+# Get name out of arguments
+shift
+
+# Set up some flags
+language="c"
+init_files=0
+remote_repo=""
+license=""
+other_args=""
+
+# Loop through arguments to check for flags
+# Note: The for loop below doesn't work for some reason.
+# When shift is called it updates weirdly.
+#for arg in "$@"; do
+while [ $# -ge 1 ]
+do
+	case $1 in
+		"-l"|"--language")
+			language="$2";
+			# Remove flag and flag value from $@
+			shift 2;
+			;;
+		"-i"|"--init")
+			# Remove flag from $@
+			init_files=1;
+			shift 1;
+			;;
+		"-r"|"--remote")
+			remote_repo="$2";
+			# Remove flag and flag value from $@
+			shift 2;
+			;;
+		"--license")
+			license="$2";
+			# Remove flag and flag value from $@
+			shift 2;
+			;;
+		*)
+			# This is where unrecognised flags should go
+			#other_args="$other_args $1";
+			#shift 1;
+			echo "Unrecognised argument \"$1\""
+			usage
+			;;
+	esac
+done
+
+#echo "$language\n$init_files\n$remote_repo\n$license"
+#echo "Unrecognised arguments: $other_args"
+
+
+# Check if language is a thing
+# TODO This currently relies on bash, try to make this dash or shell independent
+script_dir=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
+if !  echo "$(ls "$script_dir/languages/")" | grep -q -- "$language" ; then
+	echo "Language not recognised"
+	exit
+fi
+
+# Check if the remote flag was set, clone if it was
+if [ ! -z "$remote_repo" ]; then
+	echo "Cloning from repo $remote_repo"
+	# Clone from repo, exit if it failed
+	git clone "$remote_repo" "$project_name" || exit
+fi
+
+echo "Continuing"
+

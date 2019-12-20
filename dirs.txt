@@ -1,0 +1,9 @@
+bin/
+bin/libs/
+bin/logs/
+bin/metadata/
+bin/objects/
+bin/so/
+include/
+src/
+

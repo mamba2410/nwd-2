@@ -100,5 +100,31 @@ if [ ! -z "$remote_repo" ]; then
 	git clone "$remote_repo" "$project_name" || exit
 fi
 
-echo "Continuing"
+# Check if license is non-empty
+if [ ! -z "$license" ]; then
+	# If license is not empty, then check if its recognised
+	if !  echo "$(ls "$script_dir/licenses/")" | grep -q -- "$license" ; then
+		echo "License not recognised, skipping"
+	fi
+fi
 
+# Check if directory doesn't already exist
+if [ -d "$project_name" ]; then
+	echo "Directory $project_name already exists! Aborting"
+else
+	# Create project directory
+	mkdir -p $project_name
+	# Generate directory tree
+	cd $project_name
+	mkdir -p $(cat "$script_dir/dirs.txt")
+
+	# Copy over docs
+	echo "# $project_name" > README.md
+	echo "# $project_name Manual" > MANUAL.md
+	cp $script_dir/docs/DESIGN.md DESIGN.md
+	cp $script_dir/docs/ISSUES.md ISSUES.md
+	cp $script_dir/licenses/$license LICENSE.md
+	
+	# Pass off to language specific script
+	$script_dir/languages/$language/specifics.sh $project_name $init_files
+fi

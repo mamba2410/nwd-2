@@ -14,4 +14,5 @@
 	- make run
 - Handle C++ language
 - Handle Fortran-90 language
-- Handle readme, manual and design doc. Readme and manual should have project name as title. Design doc is static.
+- Create templates for docs
+- Edit template docs to show project name

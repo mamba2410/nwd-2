@@ -119,11 +119,14 @@ else
 	mkdir -p $(cat "$script_dir/dirs.txt")
 
 	# Copy over docs
-	echo "# $project_name" > README.md
-	echo "# $project_name Manual" > MANUAL.md
-	cp $script_dir/docs/DESIGN.md DESIGN.md
-	cp $script_dir/docs/ISSUES.md ISSUES.md
+	cp $script_dir/docs/README.md README.md
 	cp $script_dir/licenses/$license LICENSE.md
+	cp $script_dir/docs/DESIGN.md docs/DESIGN.md
+	cp $script_dir/docs/ISSUES.md docs/ISSUES.md
+	cp $script_dir/docs/MANUAL.md docs/MANUAL.md
+	cp $script_dir/docs/TODO.md docs/TODO.md
+
+	# Personalise docs
 	
 	# Pass off to language specific script
 	$script_dir/languages/$language/specifics.sh $project_name $init_files

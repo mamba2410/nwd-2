@@ -4,6 +4,7 @@ bin/logs/
 bin/metadata/
 bin/objects/
 bin/so/
+docs/
 include/
 src/
 

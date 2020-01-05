@@ -120,7 +120,7 @@ else
 
 	# Copy over docs
 	cp $script_dir/docs/README.md README.md
-	cp $script_dir/licenses/$license LICENSE.md
+	[ -z "$license" ] || cp $script_dir/licenses/$license LICENSE.md
 	cp $script_dir/docs/DESIGN.md docs/DESIGN.md
 	cp $script_dir/docs/ISSUES.md docs/ISSUES.md
 	cp $script_dir/docs/MANUAL.md docs/MANUAL.md
@@ -129,5 +129,5 @@ else
 	# Personalise docs
 	
 	# Pass off to language specific script
-	$script_dir/languages/$language/specifics.sh $project_name $init_files
+	$script_dir/languages/$language/specifics.sh $script_dir $project_name $init_files
 fi

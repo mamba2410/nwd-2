@@ -1,18 +1,15 @@
 # TODO
 - Set language based on the `-l` flag
 	- Make this dash/posix compliant
-- Init file alterations
-	- [Help with headers.](https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase)
-- Implement makefile (or just copy over from old one)
-	- Build date/numbers.
-		- Build number should be saved as `metadata/<filename>.bn`
-		- Build date should be saved as `metadata/<filename.bd`
-	- Submodules
-	- [Log files](https://stackoverflow.com/questions/54933242/how-do-i-make-a-makefile-to-log-both-command-and-its-output-to-a-file)
-	- Auto compile/detect submodules? Flag inside the makefile?
-	- make clean
-	- make run
+	- Move program data directory to `$XDG_DATA_HOME/nwd`
+- Handle C language
+	- Init file alterations
+		- [Help with headers.](https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase)
+	- Implement makefile (or just copy over from old one)
+		- Auto compile/detect submodules? Flag inside the makefile?
+		- Different build number for each end binary?
+		- Save build number inside binary somehow?
+		- [Log files](https://stackoverflow.com/questions/54933242/how-do-i-make-a-makefile-to-log-both-command-and-its-output-to-a-file)
 - Handle C++ language
 - Handle Fortran-90 language
-- Create templates for docs
 - Edit template docs to show project name

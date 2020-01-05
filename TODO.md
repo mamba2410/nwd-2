@@ -1,7 +1,4 @@
 # TODO
-- Set language based on the `-l` flag
-	- Make this dash/posix compliant
-	- Move program data directory to `$XDG_DATA_HOME/nwd`
 - Handle C language
 	- Init file alterations
 		- [Help with headers.](https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase)

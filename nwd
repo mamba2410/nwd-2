@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Define a function to spit out usage information
 usage(){
@@ -85,10 +85,20 @@ done
 #echo "Unrecognised arguments: $other_args"
 
 
+# Define a variable where the language and initial data should be kept
+# First check for $XDG_DATA_HOME and if that fails then look in $HOME
+data_dir="nwd"
+if [ ! -z "$XDG_DATA_HOME" ]; then
+	data_dir="$XDG_DATA_HOME/$data_dir"
+else
+	data_dir="$HOME/.$data_dir"
+fi
+
+
 # Check if language is a thing
 # TODO This currently relies on bash, try to make this dash or shell independent
-script_dir=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
-if !  echo "$(ls "$script_dir/languages/")" | grep -q -- "$language" ; then
+#data_dir=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
+if !  echo "$(ls "$data_dir/languages/")" | grep -q -- "$language" ; then
 	echo "Language not recognised"
 	exit
 fi
@@ -103,7 +113,7 @@ fi
 # Check if license is non-empty
 if [ ! -z "$license" ]; then
 	# If license is not empty, then check if its recognised
-	if !  echo "$(ls "$script_dir/licenses/")" | grep -q -- "$license" ; then
+	if !  echo "$(ls "$data_dir/licenses/")" | grep -q -- "$license" ; then
 		echo "License not recognised, skipping"
 	fi
 fi
@@ -116,18 +126,18 @@ else
 	mkdir -p $project_name
 	# Generate directory tree
 	cd $project_name
-	mkdir -p $(cat "$script_dir/dirs.txt")
+	mkdir -p $(cat "$data_dir/dirs.txt")
 
 	# Copy over docs
-	cp $script_dir/docs/README.md README.md
-	[ -z "$license" ] || cp $script_dir/licenses/$license LICENSE.md
-	cp $script_dir/docs/DESIGN.md docs/DESIGN.md
-	cp $script_dir/docs/ISSUES.md docs/ISSUES.md
-	cp $script_dir/docs/MANUAL.md docs/MANUAL.md
-	cp $script_dir/docs/TODO.md docs/TODO.md
+	cp $data_dir/docs/README.md README.md
+	[ -z "$license" ] || cp $data_dir/licenses/$license LICENSE.md
+	cp $data_dir/docs/DESIGN.md docs/DESIGN.md
+	cp $data_dir/docs/ISSUES.md docs/ISSUES.md
+	cp $data_dir/docs/MANUAL.md docs/MANUAL.md
+	cp $data_dir/docs/TODO.md docs/TODO.md
 
 	# Personalise docs
 	
 	# Pass off to language specific script
-	$script_dir/languages/$language/specifics.sh $script_dir $project_name $init_files
+	$data_dir/languages/$language/specifics.sh $data_dir $project_name $init_files
 fi

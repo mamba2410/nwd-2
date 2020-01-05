@@ -8,5 +8,9 @@
 		- Save build number inside binary somehow?
 		- [Log files](https://stackoverflow.com/questions/54933242/how-do-i-make-a-makefile-to-log-both-command-and-its-output-to-a-file)
 - Handle C++ language
+	- Copy C with small modifications
 - Handle Fortran-90 language
-- Edit template docs to show project name
+	- Copy C with modifications
+	- Add new data directories
+	- Remove include directory
+- Get this to be installed with xpbs 

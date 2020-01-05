@@ -6,18 +6,18 @@ usage(){
 	Usage:
 		nwd <project-name> [options]
 	Options:
-	-l <language>, --language=<language>
+	-l <language>, --language <language>
 		Specifies the language to use for the project.
 		Defaults to c.
 
-	-r <path/to/remote>, --remote=<path/to/remote>
+	-r <path/to/remote>, --remote <path/to/remote>
 		Specifies a path to the remote git repository to set as origin.
 		No default.
 
 	-i, --init
 		Create initialisation source files for the language.
 
-	--license=<license>
+	--license <license>
 		Copy over a license file if specified.
 		Licenses include GPL-3, MIT, etc.
 		No default.
@@ -137,6 +137,11 @@ else
 	cp $data_dir/docs/TODO.md docs/TODO.md
 
 	# Personalise docs
+	replace_token="PROJECT_NAME"
+	sed -i "s/$replace_token/$project_name/g" README.md
+	sed -i "s/$replace_token/$project_name/g" docs/DESIGN.md
+	sed -i "s/$replace_token/$project_name/g" docs/ISSUES.md
+	sed -i "s/$replace_token/$project_name/g" docs/MANUAL.md
 	
 	# Pass off to language specific script
 	$data_dir/languages/$language/specifics.sh $data_dir $project_name $init_files

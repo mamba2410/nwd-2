@@ -1,1 +1,1 @@
-# Manual
+# PROJECT_NAME Manual

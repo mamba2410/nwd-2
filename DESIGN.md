@@ -9,18 +9,18 @@ nwd <project-name> [options]
 
 ## Intended Options
 ```
--l <language>, --language=<language>
+-l <language>, --language <language>
 	Specifies the language to use for the project.
 	Defaults to C.
 
--r <path/to/remote>, --remote=<path/to/remote>
+-r <path/to/remote>, --remote <path/to/remote>
 	Specifies a path to the remote git repository to set as origin.
 	No default.
 
 -i, --init
 	Create initialisation source files for the language.
 
---license=<license>
+--license <license>
 	Copy over a license file if specified.
 	Licenses include GPL-3, MIT, etc.
 	No default.
@@ -148,7 +148,7 @@ The rest should either contribute to a library or not be part of the executable.
 
 ### Interpreted Languages
 Nothing yet.
-Maybe try adding Python later.
+Maybe try adding Python or Shell later.
 
 ## Language Specifics
 ### Init files
@@ -174,7 +174,7 @@ Once done, replace `TEMPLATE` with `$project_name_sanitised` and copy over.
 `specifics.sh` should be a shell script that is specific to each language.
 It deals with editing the directory tree, eg
 ```
-rm include/
+rm -r include/
 mkdir indata/
 mkdir outdata/
 ```

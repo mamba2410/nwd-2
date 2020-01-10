@@ -1,8 +1,14 @@
 # TODO
+
+- Add `-g` `--git` flag to initialise with git repo, and a `.gitignore`
+- Change `-r` flag to add origin remote and not clone
 - Handle C language
 	- Init file alterations
 		- [Help with headers.](https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase)
 	- Implement makefile (or just copy over from old one)
+		- Add a default `all: build` target to allow for just `make` to be run
+		- Remove unnecessary `$(EXT)` variable
+		- Rename objects to `%_c.o` to emphasise they came from c files
 		- Auto compile/detect submodules? Flag inside the makefile?
 		- Different build number for each end binary?
 		- Save build number inside binary somehow?
@@ -13,4 +19,6 @@
 	- Copy C with modifications
 	- Add new data directories
 	- Remove include directory
-- Get this to be installed with xpbs 
+- Handle asm
+- Handle C with asm
+- Get this to be installed with xpbs

@@ -5,18 +5,14 @@ CC = gcc
 LD = gcc
 GLOBAL_CC_FLAGS =
 GLOBAL_LD_FLAGS =
-EXE_NAME = a.exe
-SRC_EXT = c
-HEAD_EXT = h
-OBJ_EXT = o
 LIB_D = ./libs
 
 ###########################################################################################################
 # Build number tracking
 ###########################################################################################################
 
-BUILD_NUMBER_D = ./metadata
-include $(BUILD_NUMBER_D)/BuildNumber.mak
+METADATA_D = ./metadata
+include $(METADATA_D)/build_number.mak
 
 ###########################################################################################################
 # Subdirectory recipes
@@ -52,24 +48,28 @@ include $(BUILD_NUMBER_D)/BuildNumber.mak
 # If main relies on any libraries, add them to the LD_FLAGS variable
 # Remember to add in-house libraries as dependencies to main recipe,
 # ie make them before trying to link
-MAIN_CC_FLAGS = $(GLOBAL_CC_FLAGS)
-MAIN_LD_FLAGS = $(GLOBAL_LD_FLAGS) -L'$(LIB_D)' -Wl,-rpath='$(LIB_D)'
-MAIN_SRC_D    = ../src
-MAIN_HEAD_D   = ../include
-MAIN_OBJ_D    = ./objects
-MAIN_SOURCES  = $(wildcard $(MAIN_SRC_D)/*.$(SRC_EXT))
-MAIN_HEADERS  = $(wildcard $(MAIN_HEAD_D)/*.$(HEAD_EXT))
-MAIN_OBJECTS  = $(patsubst $(MAIN_SRC_D)/%.$(SRC_EXT), $(MAIN_OBJ_D)/%.$(OBJ_EXT), $(MAIN_SOURCES))
+MAIN_BIN = a.exe
+MAIN_CC_FLAGS	= $(GLOBAL_CC_FLAGS)
+MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L'$(LIB_D)' -Wl,-rpath='$(LIB_D)'
+MAIN_SRC_D		= ../src
+MAIN_INC_D		= ../include
+MAIN_OBJ_D		= ./objects
+MAIN_C_SRC		= $(wildcard $(MAIN_SRC_D)/*.c)
+MAIN_INC		= $(wildcard $(MAIN_INC_D)/*.h)
+MAIN_C_OBJ		= $(patsubst $(MAIN_SRC_D)/%.c, $(MAIN_OBJ_D)/%_c.o, $(MAIN_C_SRC))
 
-$(MAIN_OBJ_D)/%.$(OBJ_EXT):	$(MAIN_SRC_D)/%.$(SRC_EXT)
-	$(CC) $(MAIN_CC_FLAGS) -I'$(MAIN_HEAD_D)' -c $< -o $@ 
+$(MAIN_OBJ_D)/%_c.o:	$(MAIN_SRC_D)/%.c
+	$(CC) $(MAIN_CC_FLAGS) -I'$(MAIN_INC_D)' -c $< -o $@ 
 
-main: $(MAIN_OBJECTS) $(MAIN_HEADERS) # Add any libraries here
-	$(LD) $(MAIN_OBJECTS) $(MAIN_LD_FLAGS) -o $(EXE_NAME)
+main: $(MAIN_C_OBJ) $(MAIN_INC) # Add any libraries here
+	$(LD) $(MAIN_C_OBJ) $(MAIN_LD_FLAGS) -o $(MAIN_BIN)
 
 ###########################################################################################################
 # General recipes
 ###########################################################################################################
+
+# Default recipe, just make it build
+all: build
 
 # Recipe for building, (re-)links the executable and triggers the build number
 build: main build_number
@@ -78,12 +78,12 @@ build: main build_number
 # Recipe for running, just builds and executes the binary
 run: build
 	@echo ""	
-	@./$(EXE_NAME)
+	@./$(MAIN_BIN)
 
 # Recipe for cleaning. Removes all objects and binaries
 clean:
-	rm -rf $(MAIN_OBJ_D)/*.$(OBJ_EXT)
-	rm $(EXE_NAME)
+	rm -rf $(MAIN_OBJ_D)/*.o
+	rm $(MAIN_BIN)
 	@echo ""
 
 # Recipe for rebuilding. Just an easy way to run "make clean; make build"

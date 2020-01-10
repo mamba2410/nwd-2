@@ -5,7 +5,7 @@ project_name="$2"
 do_init=$3
 
 cp $language_home/Makefile ./bin/Makefile
-cp $language_home/BuildNumber.mak ./bin/metadata/BuildNumber.mak
+cp $language_home/build_number.mak ./bin/metadata/build_number.mak
 
 if [ $do_init = 1 ]; then
 	cp $language_home/init.c ./src/$project_name.c

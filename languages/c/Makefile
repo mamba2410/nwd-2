@@ -25,21 +25,21 @@ include $(METADATA_D)/build_number.mak
 # Example of adding a subdirectory that compiles to a shared object
 # Should probably put user-generated library files in different directory
 
-#SUB_BIN = $(LIB_D)/libsub.so
-#SUB_LD_FLAGS = $(GLOBAL_LD_FLAGS) -shared
-#SUB_CC_FLAGS = $(GLOBAL_CC_FLAGS) -fPIC
-#SUB_SRC_D    = $(MAIN_OBJ_D)/sub
-#SUB_HEAD_D   = $(MAIN_HEAD_D)/sub
-#SUB_OBJ_D    = $(MAIN_OBJ_D)/sub
-#SUB_SOURCES  = $(wildcard $(SUB_SRC_D)/*.$(SRC_EXT))
-#SUB_HEADERS  = $(wildcard $(SUB_HEAD_D)/*.$(HEAD_EXT))
-#SUB_OBJECTS  = $(patsubst $(SUB_SRC_D)/%.$(SRC_EXT), $(SUB_OBJ_D)/%.$(OBJ_EXT), $(SUB_SOURCES))
-#
-#$(SUB_OBJ_DIR)/%.$(OBJ_EXT): $(SUB_SRC_D)/%.$(SRC_EXT)
-#	$(CC) $(SUB_CC_FLAGS) -I'$(SUB_HEAD_D)' -c $< -o $@
-#
-#sub: $(SUB_OBJECTS) $(SUB_HEADERS)
-#	$(LD) $(SUB_OBJECTS) $(SUB_LD_FLAGS) -o $(SUB_BIN)
+# SUB_BIN 		= libsub.so
+# SUB_CC_FLAGS	= $(GLOBAL_CC_FLAGS)
+# SUB_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L'$(LIB_D)' -Wl,-rpath='$(LIB_D)' -fPIC -shared
+# SUB_SRC_D		= ../src/sub
+# SUB_INC_D		= ../include/sub
+# SUB_OBJ_D		= ./objects
+# SUB_C_SRC		= $(wildcard $(SUB_SRC_D)/*.c)
+# SUB_INC		= $(wildcard $(SUB_INC_D)/*.h)
+# SUB_C_OBJ		= $(patsubst $(SUB_SRC_D)/%.c, $(SUB_OBJ_D)/%_c.o, $(SUB_C_SRC))
+# 
+# $(SUB_OBJ_D)/%_c.o:	$(SUB_SRC_D)/%.c
+# 	$(CC) $(SUB_CC_FLAGS) -I'$(SUB_INC_D)' -c $< -o $@ 
+# 
+# sub: $(SUB_C_OBJ) $(SUB_INC) # Add any libraries here
+# 	$(LD) $(SUB_C_OBJ) $(SUB_LD_FLAGS) -o $(LIB_D)/$(SUB_BIN)
 
 ###########################################################################################################
 # Main recipe
@@ -48,7 +48,7 @@ include $(METADATA_D)/build_number.mak
 # If main relies on any libraries, add them to the LD_FLAGS variable
 # Remember to add in-house libraries as dependencies to main recipe,
 # ie make them before trying to link
-MAIN_BIN = a.exe
+MAIN_BIN 		= a.exe
 MAIN_CC_FLAGS	= $(GLOBAL_CC_FLAGS)
 MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L'$(LIB_D)' -Wl,-rpath='$(LIB_D)'
 MAIN_SRC_D		= ../src
@@ -68,10 +68,9 @@ main: $(MAIN_C_OBJ) $(MAIN_INC) # Add any libraries here
 # General recipes
 ###########################################################################################################
 
-# Default recipe, just make it build
-all: build
-
 # Recipe for building, (re-)links the executable and triggers the build number
+# This is the default recipe
+.DEFAULT_GOAL = build
 build: main build_number
 	@echo "Build complete"
 

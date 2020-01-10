@@ -10,6 +10,10 @@ usage(){
 		Specifies the language to use for the project.
 		Defaults to c.
 
+	-g, --git
+		Initialises a git repo for the project and adds a gitignore.
+		Also creates an initial commit.
+
 	-r <path/to/remote>, --remote <path/to/remote>
 		Specifies a path to the remote git repository to set as origin.
 		No default.
@@ -19,7 +23,7 @@ usage(){
 
 	--license <license>
 		Copy over a license file if specified.
-		Licenses include GPL-3, MIT, etc.
+		Licenses include GPL3, MIT, etc.
 		No default.
 	"
 	exit
@@ -40,6 +44,7 @@ shift
 # Set up some flags
 language="c"
 init_files=0
+init_git=0
 remote_repo=""
 license=""
 other_args=""
@@ -60,6 +65,10 @@ do
 			# Remove flag from $@
 			init_files=1;
 			shift 1;
+			;;
+		"-g"|"--git")
+			init_git=1;
+			shift;
 			;;
 		"-r"|"--remote")
 			remote_repo="$2";
@@ -103,12 +112,6 @@ if !  echo "$(ls "$data_dir/languages/")" | grep -q -- "$language" ; then
 	exit
 fi
 
-# Check if the remote flag was set, clone if it was
-if [ ! -z "$remote_repo" ]; then
-	echo "Cloning from repo $remote_repo"
-	# Clone from repo, exit if it failed
-	git clone "$remote_repo" "$project_name" || exit
-fi
 
 # Check if license is non-empty
 if [ ! -z "$license" ]; then
@@ -117,6 +120,7 @@ if [ ! -z "$license" ]; then
 		echo "License not recognised, skipping"
 	fi
 fi
+
 
 # Check if directory doesn't already exist
 if [ -d "$project_name" ]; then
@@ -145,4 +149,25 @@ else
 	
 	# Pass off to language specific script
 	$data_dir/languages/$language/specifics.sh $data_dir $project_name $init_files
+	# Come back from language script
+
+	# Check if should initialise git
+	if [ $init_git = 1 ]; then
+		git init . && echo "Initialised git"
+		touch .gitignore
+		git add .
+		git commit -m "Initial commit" && echo "Added initial commit"
+	fi
+	
+	# Check if should add a remote repo
+	if [ ! -z "$remote_repo" ]; then
+		# Check if git has been initialised
+		if [ $init_git = 0 ]; then
+			echo "Cannot add remote repository if git has not been initialised!"
+		else
+			# If all is well, add as origin
+			git remote add origin "$remote_repo" && echo "Added '$remote_repo' as origin"
+		fi
+	fi
+
 fi

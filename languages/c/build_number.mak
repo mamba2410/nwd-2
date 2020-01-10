@@ -4,7 +4,7 @@
 ##########################################################
 
 # Get the build number file, get the actual number, and get the date
-BUILD_NUMBER_FILE = $(BUILD_NUMBER_D)/$(EXE_NAME).buildinfo
+BUILD_NUMBER_FILE = $(METADATA_D)/$(BIN_NAME).bn
 BUILD_DATE = $$(date +'%Y%m%d')
 BUILD_NUMBER = $$(cat $(BUILD_NUMBER_FILE))	
 

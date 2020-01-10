@@ -6,10 +6,8 @@
 	- Init file alterations
 		- [Help with headers.](https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase)
 	- Implement makefile (or just copy over from old one)
-		- Add a default `all: build` target to allow for just `make` to be run
-		- Remove unnecessary `$(EXT)` variable
-		- Rename objects to `%_c.o` to emphasise they came from c files
 		- Auto compile/detect submodules? Flag inside the makefile?
+		- Add a proper buildinfo file that has build number, version number, date etc
 		- Different build number for each end binary?
 		- Save build number inside binary somehow?
 		- [Log files](https://stackoverflow.com/questions/54933242/how-do-i-make-a-makefile-to-log-both-command-and-its-output-to-a-file)

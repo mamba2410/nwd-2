@@ -1,4 +1,4 @@
-#ifndef CHANGEME_H
-#define CHANGEME_H
+#ifndef PROJECT_NAME_H
+#define PROJECT_NAME_H
 
-#endif
+#endif /* PROJECT_NAME_H */

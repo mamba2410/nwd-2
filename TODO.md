@@ -1,10 +1,6 @@
 # TODO
 
-- Add `-g` `--git` flag to initialise with git repo, and a `.gitignore`
-- Change `-r` flag to add origin remote and not clone
 - Handle C language
-	- Init file alterations
-		- [Help with headers.](https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase)
 	- Implement makefile (or just copy over from old one)
 		- Auto compile/detect submodules? Flag inside the makefile?
 		- Add a proper buildinfo file that has build number, version number, date etc

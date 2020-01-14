@@ -82,7 +82,7 @@ run: build
 # Recipe for cleaning. Removes all objects and binaries
 clean:
 	rm -rf $(MAIN_OBJ_D)/*.o
-	rm $(MAIN_BIN)
+	[ -f "$(MAIN_BIN)" ] && rm $(MAIN_BIN)
 	@echo ""
 
 # Recipe for rebuilding. Just an easy way to run "make clean; make build"

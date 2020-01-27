@@ -5,7 +5,7 @@ CC = gfortran
 LD = gfortran
 GLOBAL_CC_FLAGS =
 GLOBAL_LD_FLAGS =
-LIB_D = ./libs
+MODULES_D = ./modules
 
 ###########################################################################################################
 # Build number tracking
@@ -25,31 +25,41 @@ include $(METADATA_D)/build_number.mak
 # Example of adding a subdirectory that compiles to a shared object
 # Should probably put user-generated library files in different directory
 
-# SUB_BIN 		= libsub.so
-# SUB_CC_FLAGS	= $(GLOBAL_CC_FLAGS)
-# SUB_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L'$(LIB_D)' -Wl,-rpath='$(LIB_D)' -fPIC -shared
-# SUB_SRC_D		= ../src/sub
-# SUB_INC_D		= ../include/sub
-# SUB_OBJ_D		= ./objects
-# SUB_F90_SRC	= $(wildcard $(SUB_SRC_D)/*.f90)
-# SUB_F90_OBJ	= $(patsubst $(SUB_SRC_D)/%.f90, $(SUB_OBJ_D)/%_f90.o, $(SUB_F90_SRC))
+# SUBDIR_BIN 		= subdir.exe
+# SUBDIR_CC_FLAGS	= $(GLOBAL_CC_FLAGS)
+# SUBDIR_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L'$(LIB_D)' -Wl,-rpath='$(LIB_D)' -fPIC -shared
+# SUBDIR_SRC_D		= ../src/subdir
+# SUBDIR_OBJ_D		= ./objects
+# SUBDIR_F90_SRC	= $(wildcard $(SUBDIR_SRC_D)/*.f90)
+# SUBDIR_F90_OBJ	= $(patsubst $(SUBDIR_SRC_D)/%.f90, $(SUBDIR_OBJ_D)/%_f90.o, $(SUBDIR_F90_SRC))
 # 
-# $(SUB_OBJ_D)/%_f90.o:	$(SUB_SRC_D)/%.f90
-# 	$(CC) $(SUB_CC_FLAGS) -c $< -o $@ 
+# $(SUBDIR_OBJ_D)/%_f90.o:	$(SUBDIR_SRC_D)/%.f90
+# 	$(CC) $(SUBDIR_CC_FLAGS) -c $< -o $@ 
 # 
-# sub: $(SUB_F90_OBJ)
-# 	$(LD) $(SUB_F90_OBJ) $(SUB_LD_FLAGS) -o $(LIB_D)/$(SUB_BIN)
+# subdir: modules $(SUBDIR_F90_OBJ)
+# 	$(LD) $(SUBDIR_F90_OBJ) $(MODULES_F90_OBJ) $(SUBDIR_LD_FLAGS) -o $(LIB_D)/$(SUBDIR_BIN)
 
 ###########################################################################################################
 # Main recipe
 ###########################################################################################################
+
+MODULES_CC_FLAGS	= $(GLOBAL_CC_FLAGS) -J'$(MODULES_D)'
+MODULES_SRC_D		= ../src/modules	
+MODULES_OBJ_D		= ./objects
+MODULES_F90_SRC	= $(wildcard $(MODULES_SRC_D)/*.f90)
+MODULES_F90_OBJ	= $(patsubst $(MODULES_SRC_D)/%.f90, $(MODULES_OBJ_D)/%_f90.o, $(MODULES_F90_SRC))
+
+$(MODULES_OBJ_D)/%_f90.o:	$(MODULES_SRC_D)/%.f90
+	$(CC) $(MODULES_CC_FLAGS) -c $< -o $@ 
+
+modules: $(MODULES_F90_OBJ)
 
 # If main relies on any libraries, add them to the LD_FLAGS variable
 # Remember to add in-house libraries as dependencies to main recipe,
 # ie make them before trying to link
 MAIN_BIN 		= a.exe
 MAIN_CC_FLAGS	= $(GLOBAL_CC_FLAGS)
-MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L'$(LIB_D)' -Wl,-rpath='$(LIB_D)'
+MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS)
 MAIN_SRC_D		= ../src
 MAIN_OBJ_D		= ./objects
 MAIN_F90_SRC	= $(wildcard $(MAIN_SRC_D)/*.f90)
@@ -58,8 +68,8 @@ MAIN_F90_OBJ	= $(patsubst $(MAIN_SRC_D)/%.f90, $(MAIN_OBJ_D)/%_f90.o, $(MAIN_F90
 $(MAIN_OBJ_D)/%_f90.o:	$(MAIN_SRC_D)/%.f90
 	$(CC) $(MAIN_CC_FLAGS) -c $< -o $@ 
 
-main: $(MAIN_F90_OBJ)
-	$(LD) $(MAIN_F90_OBJ) $(MAIN_LD_FLAGS) -o $(MAIN_BIN)
+main: modules $(MAIN_F90_OBJ)
+	$(LD) $(MAIN_F90_OBJ) $(MODULES_F90_OBJ) $(MAIN_LD_FLAGS) -o $(MAIN_BIN)
 
 ###########################################################################################################
 # General recipes

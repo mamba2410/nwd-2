@@ -44,7 +44,7 @@ include $(METADATA_D)/build_number.mak
 ###########################################################################################################
 
 MODULES_CC_FLAGS	= $(GLOBAL_CC_FLAGS) -J'$(MODULES_D)'
-MODULES_SRC_D		= ../src/modules	
+MODULES_SRC_D		= ../src/modules
 MODULES_OBJ_D		= ./objects
 MODULES_F90_SRC	= $(wildcard $(MODULES_SRC_D)/*.f90)
 MODULES_F90_OBJ	= $(patsubst $(MODULES_SRC_D)/%.f90, $(MODULES_OBJ_D)/%_f90.o, $(MODULES_F90_SRC))
@@ -58,7 +58,7 @@ modules: $(MODULES_F90_OBJ)
 # Remember to add in-house libraries as dependencies to main recipe,
 # ie make them before trying to link
 MAIN_BIN 		= a.exe
-MAIN_CC_FLAGS	= $(GLOBAL_CC_FLAGS)
+MAIN_CC_FLAGS	= $(GLOBAL_CC_FLAGS) -I'$(MODULES_D)'
 MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS)
 MAIN_SRC_D		= ../src
 MAIN_OBJ_D		= ./objects

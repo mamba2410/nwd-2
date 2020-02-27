@@ -9,7 +9,7 @@ cp $language_home/build_number.mak ./bin/metadata/build_number.mak
 
 rm -r ./include
 mkdir ./data
-mkdir ./modules
+mkdir ./bin/modules
 
 project_name_upper=$(echo $project_name | tr '[:lower:]' '[:upper:]')
 project_name_upper=$(echo $project_name_upper | sed 's/[^[:alpha:]]/\_/g')

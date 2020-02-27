@@ -11,6 +11,8 @@ rm -r ./include
 mkdir ./data
 mkdir ./bin/modules
 
+[ -f .gitignore ] && echo "bin/modules/*" >> .gitignore
+
 project_name_upper=$(echo $project_name | tr '[:lower:]' '[:upper:]')
 project_name_upper=$(echo $project_name_upper | sed 's/[^[:alpha:]]/\_/g')
 

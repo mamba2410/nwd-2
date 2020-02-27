@@ -154,7 +154,8 @@ else
 	# Check if should initialise git
 	if [ $init_git = 1 ]; then
 		git init . && echo "Initialised git"
-		touch .gitignore
+		#touch .gitignore
+		cp $data_dir/docs/gitignore .gitignore
 		git add .
 		git commit -m "Initial commit" && echo "Added initial commit"
 	fi

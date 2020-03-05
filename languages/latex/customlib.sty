@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}[1194/06/01]
-\ProvidesPackage{customlib}[2019/04/17 v0.1 Some things I normally use, just in a package]
+\ProvidesPackage{customlib}[Custom library for use with LaTeX]
 
 % All the packages required or normally used
 % Some may need to be installed by tlmgr install xxx
@@ -11,7 +11,7 @@
 \RequirePackage{multicol}
 \RequirePackage{caption}
 \RequirePackage{physics}
-%\RequirePackage{xargs}
+\RequirePackage{esint}
 
 \newcommand\csettags{\numberwithin{equation}{section}}
 
@@ -22,9 +22,9 @@
 \newcommand{\ctitlepage}[2]{{
 	\begin{titlepage}
 		\centering
-		{\upshape\Large YOUR NAME \par}
-		\vspace{2cm}
 		{\upshape\Large #1\par}
+		\vspace{2cm}
+		{\upshape\large YOUR NAME \par}
 		\vspace{1.5cm}
 		{\upshape\large #2\par}
 		\vfill
@@ -44,9 +44,9 @@
 % Custom title page with title and contents
 \newcommand{\ctitlecontents}[2]{{
 	\begin{center}
-		{\upshape\Large YOUR NAME \par}
-		\vspace{0.25cm}
 		{\upshape\Large #1 \par}
+		\vspace{0.25cm}
+		{\upshape\large YOUR NAME \par}
 		\vspace{0.25cm}
 		{\upshape\small Created #2, Last Revised \today\par}
 		\vspace{0.5cm}
@@ -74,11 +74,11 @@
 \newcommand{\ith}{\vb{i}_\theta}
 \newcommand{\iph}{\vb{i}_\varphi}
 
-\newcommand{\lineint}[2][\vb{l}]{ \int #2 \cdot \dd{#1} }		% TODO: Add optional limits
+\newcommand{\lineint} [2][\vb{l}]{ \int #2 \cdot \dd{#1} }		% TODO: Add optional limits
 \newcommand{\clineint}[2][\vb{l}]{ \oint #2 \cdot \dd{#1} }
-\newcommand{\surfint}[2][\vb{S}]{ \iint #2 \cdot \dd{#1} }
+\newcommand{\surfint} [2][\vb{S}]{ \iint #2 \cdot \dd{#1} }
 \newcommand{\csurfint}[2][\vb{S}]{ \oiint #2 \cdot \dd{#1} }
-\newcommand{\volint}[2][V]{\iiint #2 \dd{#1} }
+\newcommand{\volint}  [2][V]{\iiint #2 \dd{#1} }
 
 \newenvironment{figmulticol}{
   {\par\medskip\noindent\minipage{\linewidth}}

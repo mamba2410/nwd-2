@@ -30,7 +30,7 @@ MAIN_TEX_SRC	= $(wildcard ./*.tex)
 .DEFAULT_GOAL = build
 build: $(MAIN_TEX_SRC) build_number
 	$(CC) $(CC_FLAGS) $(MAIN_TEX_SRC)
-	cp $(MAIN_OUT_D)/*.pdf $(MAIN_PDF)
+	@cp $(MAIN_OUT_D)/*.pdf $(MAIN_PDF)
 
 # Recipe for running, just builds and executes the binary
 run: build

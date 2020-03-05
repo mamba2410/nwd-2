@@ -3,6 +3,7 @@
 This is a script designed to help create new projects.
 
 Designed around C but intended to support C, C++ and Fortran 90 out of the box.
+LaTeX is also included but that might be iffy.
 
 It should be highly customisable, and adding new languages should be as simple as adding a new directory in the `languages/` directory.
 Editing the directory path and adding new licenses should also be very simple to do.

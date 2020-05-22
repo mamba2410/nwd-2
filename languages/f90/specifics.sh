@@ -1,11 +1,14 @@
 #!/bin/sh
 
 language_home="$1/languages/f90"
+common_home="$1/common"
 project_name="$2"
 do_init=$3
 
-cp $language_home/Makefile ./Makefile
-cp $language_home/build_number.mak ./build/build_number.mak
+cp $common_home/Makefile ./Makefile
+cp $common_home/build_number.mak ./build/build_number.mak
+
+patch -sl -i $language_home/make.patch
 
 rm -r ./include
 mkdir ./data

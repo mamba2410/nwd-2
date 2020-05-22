@@ -4,8 +4,8 @@ language_home="$1/languages/f90"
 project_name="$2"
 do_init=$3
 
-cp $language_home/Makefile ./bin/Makefile
-cp $language_home/build_number.mak ./bin/metadata/build_number.mak
+cp $language_home/Makefile ./Makefile
+cp $language_home/build_number.mak ./build/build_number.mak
 
 rm -r ./include
 mkdir ./data

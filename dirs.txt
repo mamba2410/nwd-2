@@ -1,9 +1,10 @@
 bin/
-bin/libs/
-bin/logs/
-bin/metadata/
 bin/objects/
 bin/so/
+build/
+build/deps/
+build/logs/
+build/metadata/
 docs/
 include/
 src/

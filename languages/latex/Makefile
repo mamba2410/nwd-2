@@ -2,8 +2,7 @@
 # Build number tracking
 ###########################################################################################################
 
-METADATA_D = ./build
-include $(METADATA_D)/build_number.mak
+include /build/build_number.mak
 
 ###########################################################################################################
 # Main recipe
@@ -50,7 +49,7 @@ build: $(MAIN_TEX_pdf) build_number
 
 # Recipe for running, just builds and executes the binary
 run: build
-	$(PDF_VIEWER) $(MAIN_PDF) &
+	$(PDF_VIEWER) $(MAIN_PDF) & disown
 
 # Recipe for cleaning. Removes all objects and binaries
 clean:

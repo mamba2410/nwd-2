@@ -1,5 +1,5 @@
---- ../../common/Makefile	2020-05-22 20:33:39.739723598 +0100
-+++ Makefile	2020-09-26 20:51:35.837758665 +0100
+--- ../../common/Makefile	2020-09-26 21:02:27.039739357 +0100
++++ /home/callum/tmp/aaaaa/Makefile	2020-09-26 20:39:42.213779825 +0100
 @@ -1,11 +1,26 @@
  ###########################################################################################################
  # Compiler, flags and names
@@ -31,7 +31,7 @@
  
  ###########################################################################################################
  # Makefile includes
-@@ -17,21 +32,54 @@
+@@ -17,22 +32,54 @@
  # Main recipe
  ###########################################################################################################
  
@@ -46,11 +46,10 @@
 +MAIN_INC_FLAGS	= -I$(ARDUINO_CORE_D) -I$(ARDUINO_TARGET_D)
  MAIN_SRC_D		= ./src
 -MAIN_INC_D		= ./include
--MAIN_OBJ_D		= ./bin/objects
--MAIN_C_SRC		= $(wildcard $(MAIN_SRC_D)/*.c)
 +MAIN_INC_D		= ./src
-+MAIN_OBJ_D		= ./build/target/objects
-+MAIN_SLIB_D		= ./build/target/libstatic
+ MAIN_OBJ_D		= ./build/target/objects
+ MAIN_SLIB_D		= ./build/target/libstatic
+-MAIN_C_SRC		= $(wildcard $(MAIN_SRC_D)/*.c)
 +MAIN_INO_CPP_D	= /tmp
 +MAIN_CPP_SRC	= $(wildcard $(MAIN_SRC_D)/*.cpp)
 +MAIN_INO_SRC	= $(wildcard $(MAIN_SRC_D)/*.ino)
@@ -97,7 +96,7 @@
  
  ###########################################################################################################
  # General recipes
-@@ -43,14 +91,13 @@
+@@ -44,14 +91,13 @@
  	@echo "Build complete"
  
  # Recipe for running, just builds and executes the binary

@@ -1,5 +1,5 @@
 --- ../../common/Makefile	2020-05-22 20:33:39.739723598 +0100
-+++ Makefile	2020-09-26 17:48:08.905085034 +0100
++++ Makefile	2020-09-26 20:51:35.837758665 +0100
 @@ -1,11 +1,26 @@
  ###########################################################################################################
  # Compiler, flags and names
@@ -31,7 +31,7 @@
  
  ###########################################################################################################
  # Makefile includes
-@@ -17,21 +32,43 @@
+@@ -17,21 +32,54 @@
  # Main recipe
  ###########################################################################################################
  
@@ -39,30 +39,42 @@
 -MAIN_CC_FLAGS	= $(GLOBAL_CC_FLAGS)
 -MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L'$(LIB_D)' -Wl,-rpath='$(LIB_D)'
 +
-+MAIN_OUT		= a
++MAIN_OUT		= ./build/target/a
 +MAIN_CC_FLAGS	= $(GLOBAL_CC_FLAGS) -DF_CPU=16000000UL -Os
-+MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L$(MAIN_OBJ_D) -lcore
++MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L$(MAIN_SLIB_D) -lcore
 +MAIN_OC_FLAGS	= $(GLOBAL_OC_FLAGS) -O ihex
 +MAIN_INC_FLAGS	= -I$(ARDUINO_CORE_D) -I$(ARDUINO_TARGET_D)
  MAIN_SRC_D		= ./src
 -MAIN_INC_D		= ./include
-+MAIN_INC_D		= ./src
- MAIN_OBJ_D		= ./bin/objects
+-MAIN_OBJ_D		= ./bin/objects
 -MAIN_C_SRC		= $(wildcard $(MAIN_SRC_D)/*.c)
++MAIN_INC_D		= ./src
++MAIN_OBJ_D		= ./build/target/objects
++MAIN_SLIB_D		= ./build/target/libstatic
++MAIN_INO_CPP_D	= /tmp
 +MAIN_CPP_SRC	= $(wildcard $(MAIN_SRC_D)/*.cpp)
++MAIN_INO_SRC	= $(wildcard $(MAIN_SRC_D)/*.ino)
  MAIN_INC		= $(wildcard $(MAIN_INC_D)/*.h)
 -MAIN_C_OBJ		= $(patsubst $(MAIN_SRC_D)/%.c, $(MAIN_OBJ_D)/%_c.o, $(MAIN_C_SRC))
 +MAIN_CPP_OBJ	= $(patsubst $(MAIN_SRC_D)/%.cpp, $(MAIN_OBJ_D)/%_cpp.o, $(MAIN_CPP_SRC))
++MAIN_INO_OBJ	= $(patsubst $(MAIN_SRC_D)/%.ino, $(MAIN_OBJ_D)/%_ino.o, $(MAIN_INO_SRC))
 +
 +$(MAIN_OBJ_D)/%_cpp.o:	$(MAIN_SRC_D)/%.cpp
 +	$(CC) $(MAIN_CC_FLAGS) -I'$(MAIN_INC_D)' $(MAIN_INC_FLAGS) -c $< -o $@ 
 +
++$(MAIN_INO_CPP_D)/%_ino.cpp: $(MAIN_SRC_D)/%.ino
++	sed '1i #include <Arduino.h>' $<  > $@
 +
-+CORE_BIN		= $(MAIN_OBJ_D)/libcore.a
++$(MAIN_OBJ_D)/%_ino.o: $(MAIN_INO_CPP_D)/%_ino.cpp
++	$(CC) $(MAIN_CC_FLAGS) -I'$(MAIN_INC_D)' $(MAIN_INC_FLAGS) -c $< -o $@ 
++
++
++CORE_BIN		= $(MAIN_SLIB_D)/libcore.a
 +CORE_SRC		= $(wildcard $(ARDUINO_CORE_D)/*.cpp)
 +CORE_SRC		+= $(wildcard $(ARDUINO_CORE_D)/*.c)
 +CORE_OBJ		= $(patsubst $(ARDUINO_CORE_D)/%.cpp, $(MAIN_OBJ_D)/core_%_cpp.o, $(CORE_SRC))
 +CORE_OBJ		+= $(patsubst $(ARDUINO_CORE_D)/%.c, $(MAIN_OBJ_D)/core_%_c.o, $(CORE_SRC))
++
 +
 +$(MAIN_OBJ_D)/core_%_cpp.o: $(ARDUINO_CORE_D)/%.cpp
 +	$(CC) $(MAIN_CC_FLAGS) -I$(ARDUINO_CORE_D) -I$(ARDUINO_TARGET_D) -c $< -o $@
@@ -76,8 +88,8 @@
  
 -$(MAIN_OBJ_D)/%_c.o:	$(MAIN_SRC_D)/%.c
 -	$(CC) $(MAIN_CC_FLAGS) -I'$(MAIN_INC_D)' -c $< -o $@ 
-+main: $(MAIN_CPP_OBJ) $(MAIN_INC_D) $(CORE_BIN)
-+	$(LD) $(MAIN_CPP_OBJ) $(MAIN_LD_FLAGS) -o $(MAIN_OUT).elf
++main: $(MAIN_CPP_OBJ) $(MAIN_INO_OBJ) $(MAIN_INC_D) $(CORE_BIN)
++	$(LD) $(MAIN_CPP_OBJ) $(MAIN_INO_OBJ) $(MAIN_LD_FLAGS) -o $(MAIN_OUT).elf
 +	$(OC) $(MAIN_OC_FLAGS) $(MAIN_OUT).elf $(MAIN_OUT).hex
  
 -main: $(MAIN_C_OBJ) $(MAIN_INC) # Add any libraries here
@@ -85,7 +97,7 @@
  
  ###########################################################################################################
  # General recipes
-@@ -43,14 +80,13 @@
+@@ -43,14 +91,13 @@
  	@echo "Build complete"
  
  # Recipe for running, just builds and executes the binary

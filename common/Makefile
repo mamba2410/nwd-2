@@ -22,7 +22,8 @@ MAIN_CC_FLAGS	= $(GLOBAL_CC_FLAGS)
 MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L'$(LIB_D)' -Wl,-rpath='$(LIB_D)'
 MAIN_SRC_D		= ./src
 MAIN_INC_D		= ./include
-MAIN_OBJ_D		= ./bin/objects
+MAIN_OBJ_D		= ./build/target/objects
+MAIN_SLIB_D		= ./build/target/libstatic
 MAIN_C_SRC		= $(wildcard $(MAIN_SRC_D)/*.c)
 MAIN_INC		= $(wildcard $(MAIN_INC_D)/*.h)
 MAIN_C_OBJ		= $(patsubst $(MAIN_SRC_D)/%.c, $(MAIN_OBJ_D)/%_c.o, $(MAIN_C_SRC))

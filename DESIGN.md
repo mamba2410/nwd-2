@@ -97,13 +97,13 @@ project/
 ├── LICENSE.md
 ├── README.md
 ├── Makefile
-├── bin/
-│   ├── objects/
-│   └── so/
 ├── build/
 │   ├── deps/
 │   ├── logs/
-│   └── metadata/
+│   ├── metadata/
+│   └── target/
+│       ├── libstatic/
+│       └── objects/
 ├── docs/
 │   ├── DESIGN.md
 │   ├── ISSUES.md

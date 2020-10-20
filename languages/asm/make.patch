@@ -1,5 +1,5 @@
---- ../../common/Makefile	2020-05-22 20:33:39.739723598 +0100
-+++ Makefile	2020-05-22 21:17:57.111769875 +0100
+--- ../../common/Makefile	2020-09-26 21:02:27.039739357 +0100
++++ Makefile	2020-10-20 16:06:18.920820522 +0100
 @@ -1,9 +1,9 @@
  ###########################################################################################################
  # Compiler, flags and names
@@ -12,7 +12,7 @@
  GLOBAL_LD_FLAGS =
  LIB_D = ./build/deps
  
-@@ -18,20 +18,20 @@
+@@ -18,21 +18,21 @@
  ###########################################################################################################
  
  MAIN_BIN 		= a.exe
@@ -22,7 +22,8 @@
 +MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L'$(LIB_D)' -Wl
  MAIN_SRC_D		= ./src
  MAIN_INC_D		= ./include
- MAIN_OBJ_D		= ./bin/objects
+ MAIN_OBJ_D		= ./build/target/objects
+ MAIN_SLIB_D		= ./build/target/libstatic
 -MAIN_C_SRC		= $(wildcard $(MAIN_SRC_D)/*.c)
 +MAIN_S_SRC		= $(wildcard $(MAIN_SRC_D)/*.S)
  MAIN_INC		= $(wildcard $(MAIN_INC_D)/*.h)

@@ -19,7 +19,7 @@
 -MAIN_CC_FLAGS	= $(GLOBAL_CC_FLAGS)
 -MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L'$(LIB_D)' -Wl,-rpath='$(LIB_D)'
 +MAIN_AS_FLAGS	= $(GLOBAL_AS_FLAGS)
-+MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS) -L'$(LIB_D)' -Wl
++MAIN_LD_FLAGS	= $(GLOBAL_LD_FLAGS)
  MAIN_SRC_D		= ./src
  MAIN_INC_D		= ./include
  MAIN_OBJ_D		= ./build/target/objects

@@ -1,5 +1,5 @@
---- ../../common/Makefile	2020-05-22 20:33:39.739723598 +0100
-+++ Makefile	2020-05-22 21:18:35.015770535 +0100
+--- ../Makefile	2020-11-24 20:33:05.927128202 +0000
++++ Makefile	2020-11-24 20:31:56.510679117 +0000
 @@ -1,8 +1,8 @@
  ###########################################################################################################
  # Compiler, flags and names
@@ -11,10 +11,10 @@
  GLOBAL_CC_FLAGS =
  GLOBAL_LD_FLAGS =
  LIB_D = ./build/deps
-@@ -23,15 +23,15 @@
- MAIN_SRC_D		= ./src
+@@ -24,15 +24,15 @@
  MAIN_INC_D		= ./include
- MAIN_OBJ_D		= ./bin/objects
+ MAIN_OBJ_D		= ./build/target/objects
+ MAIN_SLIB_D		= ./build/target/libstatic
 -MAIN_C_SRC		= $(wildcard $(MAIN_SRC_D)/*.c)
 +MAIN_CPP_SRC	= $(wildcard $(MAIN_SRC_D)/*.cpp)
  MAIN_INC		= $(wildcard $(MAIN_INC_D)/*.h)

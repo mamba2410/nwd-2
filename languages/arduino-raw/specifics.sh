@@ -1,6 +1,6 @@
 #!/bin/sh
 
-language_home="$1/languages/arduino"
+language_home="$1/languages/arduino-raw"
 common_home="$1/common"
 project_name="$2"
 do_init=$3

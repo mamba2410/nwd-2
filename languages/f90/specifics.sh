@@ -10,11 +10,13 @@ cp $common_home/build_number.mak ./build/build_number.mak
 
 patch -sl -i $language_home/make.patch
 
+modules_dir="./build/target/modules/"
+
 rm -r ./include
 mkdir ./data
-mkdir ./bin/modules
+mkdir $modules_dir
 
-[ -f .gitignore ] && echo "bin/modules/*" >> .gitignore
+#[ -f .gitignore ] && echo "$modules_dir" >> .gitignore
 
 project_name_upper=$(echo $project_name | tr '[:lower:]' '[:upper:]')
 project_name_upper=$(echo $project_name_upper | sed 's/[^[:alpha:]]/\_/g')

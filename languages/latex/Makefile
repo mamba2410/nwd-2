@@ -16,13 +16,14 @@ DEBUG =
 #PDF_VIEWER		= mupdf
 PDF_VIEWER		= firefox
 CC				= pdflatex
-CC_FLAGS		= -output-directory $(MAIN_OUT_D)
+REF_MAKER		= biber
+CC_FLAGS		= --output-directory $(MAIN_OUT_D)
+REF_FLAGS		= $(CC_FLAGS)
 MAIN_SRC_D		= .
 MAIN_OUT_D		= ./outs
-MAIN_STY_D		= ./lib
-MAIN_STY_SRC	= $(wildcard $(MAIN_STY_D)/*.sty)
 MAIN_TEX_SRC	= $(wildcard $(MAIN_SRC_D)/*.tex)
 MAIN_TEX_PDF	= $(patsubst $(MAIN_SRC_D)/%.tex, $(MAIN_OUT_D)/%.pdf, $(MAIN_TEX_SRC))
+MAIN_TEX_BBL	= $(patsubst $(MAIN_SRC_D)/%.tex, $(MAIN_OUT_D)/%.bbl, $(MAIN_TEX_SRC))
 
 DEPS_TEX_D		= ./src
 DEPS_TEX_SRC	= $(wildcard $(DEPS_SRC_D)/*.tex)
@@ -37,6 +38,17 @@ else
 	$(CC) $(CC_FLAGS) $<
 endif
 
+$(MAIN_OUT_D)/%.bbl: $(MAIN_OUT_D)/%.tex
+ifndef DEBUG
+	$(CC) $(CC_FLAGS) $< > /dev/null
+	$(REF_MAKER) $(REF_FLAGS) $(patsubst %.tex, %, $<) > /dev/null
+else
+	$(CC) $(CC_FLAGS) $<
+	$(REF_MAKER) $(REF_FLAGS) $(patsubst %.tex, %, $<)
+	@echo "Refs done " $<
+endif
+
+
 
 ###########################################################################################################
 # General recipes
@@ -45,7 +57,7 @@ endif
 # Recipe for building, (re-)links the executable and triggers the build number
 # This is the default recipe
 .DEFAULT_GOAL = build
-build: $(MAIN_TEX_pdf) build_number
+build: $(MAIN_TEX_BIB) $(MAIN_TEX_pdf) build_number
 
 # Recipe for running, just builds and executes the binary
 run: build

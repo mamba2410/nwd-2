@@ -6,7 +6,6 @@ do_init=$3
 
 rm -r include
 mkdir outs images
-mv bin build
 
 cp $language_home/Makefile ./Makefile
 cp $language_home/build_number.mak ./build/build_number.mak
